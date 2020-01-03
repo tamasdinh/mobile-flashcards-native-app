@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux'
 import reducer from './reducers'
+import middleware from './middleware'
 
 import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 import { createAppContainer } from 'react-navigation'
@@ -11,9 +12,9 @@ import Constants from 'expo-constants'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { darkGrey, white } from './utils/colors'
-import DeckList from './components/Home'
+import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
-import Deck from './components/Deck'
+import DeckDetail from './components/DeckDetail'
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -24,7 +25,7 @@ function CustomStatusBar ({ backgroundColor, ...props }) {
 }
 
 const BottomTabs = createBottomTabNavigator({
-  Home: {
+  DeckList: {
     screen: DeckList,
     navigationOptions: {
       tabBarLabel: 'Decks',
@@ -67,8 +68,8 @@ const StackNavigator = createStackNavigator({
   Decks: {
     screen: BottomTabs
   },
-  Deck: {
-    screen: Deck,
+  DeckDetail: {
+    screen: DeckDetail,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
@@ -83,7 +84,7 @@ const NavContainer = createAppContainer(StackNavigator)
 export default class App extends Component {
   render() {
     return (
-      <Provider store={createStore(reducer)}>
+      <Provider store={createStore(reducer, middleware)}>
         <View style={{flex: 1}}>
           <CustomStatusBar backgroundColor={darkGrey} barStyle='light-content'/>
           <NavContainer />

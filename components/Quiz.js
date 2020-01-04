@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
+import { setUpResults } from '../actions'
 
 import { styles, baseColorDark, accentColor1, accentColor3, baseColorLight, redFlagColor } from '../utils/styles'
 
@@ -20,6 +21,10 @@ class Quiz extends Component {
       activeQuestion: this.props.questions[0],
       questionLength: this.props.questions.length
     }))
+    console.log(this.props)
+    if (!this.props.results) {
+      this.props.dispatch(setUpResults(this.props.deckName))
+    }
   }
 
   toggleAnswer = () => {
@@ -28,11 +33,6 @@ class Quiz extends Component {
 
   addCorrect = () => {
     console.log('Add a point to the deck\'s result')
-    this.nextQuestion()
-  }
-
-  addMissed = () => {
-    console.log('Add a minus to the deck\'s result')
     this.nextQuestion()
   }
 
@@ -98,7 +98,7 @@ class Quiz extends Component {
               </TouchableOpacity>
             
               <TouchableOpacity
-                onPress={this.addMissed}
+                onPress={this.nextQuestion}
                 style={[styles.button1, styles.shadow,
                   {backgroundColor: redFlagColor,
                     borderColor: redFlagColor,
@@ -123,7 +123,8 @@ function mapStateToProps({ data }, { navigation }) {
   const { deckName } = navigation.state.params
   return {
     deckName,
-    questions: data[deckName].questions
+    questions: data[deckName].questions,
+    results: data[deckName].results
   }
 }
 

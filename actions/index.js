@@ -4,6 +4,7 @@ import * as uuid from 'uuid'
 
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'
 export const SET_ID = 'SET_ID'
+export const SETUP_RESULTS = 'SETUP_RESULTS'
 
 function setInitialData (id, data) {
   return {
@@ -19,5 +20,12 @@ export function handleInitialData() {
   return (dispatch) => {
     return AsyncStorage.setItem(id, data)
     .then(dispatch(setInitialData(JSON.parse(id), JSON.parse(data))))
+  }
+}
+
+export function setUpResults(deckName) {
+  return {
+    type: SETUP_RESULTS,
+    deckName
   }
 }

@@ -22,7 +22,7 @@ class AddDeck extends Component {
 
   createDeck = () => {
     this.props.dispatch(handleAddDeck(this.props.id, this.state.createDeckTitle))
-      .then(this.props.navigation.goBack())
+      .then(this.props.navigation.navigate('DeckDetail', { deckName: this.state.createDeckTitle }))
   }
 
   render() {

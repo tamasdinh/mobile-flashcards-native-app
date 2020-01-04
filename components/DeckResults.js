@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
 
-import { styles, accentColor2, accentColor3, baseColorLight } from '../utils/styles'
+import { styles, accentColor2, accentColor3, baseColorLight, baseColorDark } from '../utils/styles'
 
 class DeckResults extends Component {
   render() {
@@ -33,16 +33,31 @@ class DeckResults extends Component {
           {(results / questionCount * 100).toFixed(0)}%
         </Text>
         <Text style={{textAlign: 'center'}}>You got {results} out of {questionCount} questions right.</Text>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Decks')}
-          style={[styles.button1, styles.button2,
-            {backgroundColor: accentColor3,
-            borderColor: accentColor3}]}>
-          <Text
-            style={[{color: baseColorLight, fontWeight: 'bold'}]}>
-            Back to Home
-          </Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Quiz', { deckName })}
+            style={[styles.button1, styles.button2,
+              {backgroundColor: accentColor3,
+                borderColor: accentColor3,
+                height: 50,
+                width: 150}]}>
+            <Text
+              style={[{color: baseColorLight, fontWeight: 'bold'}]}>
+              Restart Quiz
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('DeckDetail', { deckName })}
+            style={[styles.button1, styles.button2,
+              {backgroundColor: accentColor2,
+                borderColor: accentColor2,
+                width: 150}]}>
+            <Text
+              style={[{color: baseColorLight, fontWeight: 'bold'}]}>
+              Back to Home
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }

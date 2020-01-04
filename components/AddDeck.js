@@ -10,6 +10,8 @@ import {
   from 'react-native'
 import { connect } from 'react-redux'
 
+import { styles, baseColorLight } from '../utils/styles'
+
 class AddDeck extends Component {
 
   state = {
@@ -17,23 +19,25 @@ class AddDeck extends Component {
   }
 
   createDeck = () => {
-    console.log('Create deck')
+    console.log('Create deck', this.state.createDeckTitle)
+    this.props.navigation.goBack()
   }
 
   render() {
     return (
-      <View>
-       {/* <KeyboardAvoidingView> */}
-        <Text>What is the title of your new deck?</Text>
+      <KeyboardAvoidingView style={styles.container}>
+        <Text style={[styles.keyText, {fontSize: 40}]}>What is the title of your new deck?</Text>
         <TextInput
+          style={[styles.button1, styles.textInput]}
           placeholder='Add deck title here'
-          // onChangeText={this.setState(text => ({createDeckTitle: text}))}
+          onChangeText={text => this.setState({createDeckTitle: text})}
           />
-        <TouchableOpacity onPress={this.createDeck}>
-          <Text>Create Deck</Text>
+        <TouchableOpacity
+          onPress={this.createDeck}
+          style={[styles.button1, styles.button2, styles.shadow, {marginBottom: 150}]}>
+          <Text style={{color: baseColorLight}}>Create Deck</Text>
         </TouchableOpacity>
-       {/* </KeyboardAvoidingView> */}
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

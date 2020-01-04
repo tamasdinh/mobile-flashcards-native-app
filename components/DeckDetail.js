@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
 
 import Deck from './Deck'
+import { styles, baseColorLight } from '../utils/styles'
 
 class DeckDetail extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { entryId } = navigation.state.params
+    const { deckName } = navigation.state.params
     return {
-      title: entryId
+      title: `${deckName} deck`
     }
   }
 
@@ -26,23 +27,42 @@ class DeckDetail extends Component {
   }
 
   render() {
+    const { deckName } = this.props.navigation.state.params
     return (
-      <View>
-        <Deck deckName={'React'} />
-        <Text>{JSON.stringify(this.props)}</Text>
-        <TouchableOpacity onPress={this.addCard}>
+      <View style={styles.container}>
+      
+        <Deck deckName={deckName} />
+      
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate(
+            'AddCard',
+            { deckName }
+          )}
+          style={[styles.button1, styles.shadow, {marginTop: 100}]}>
           <Text>Add Card</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.startQuiz}>
-          <Text>Start Quiz</Text>
+      
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate(
+            'Quiz',
+            { deckName }
+          )}
+          style={[styles.button1, styles.button2, styles.shadow]}>
+          <Text style={{color: baseColorLight}}>Start Quiz</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.deleteDeck}>
-          <Text>Delete Deck</Text>
+        
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate(
+            'DeleteDeck',
+            { deckName }
+          )}
+          style={[styles.button1, styles.shadow]}>
+          <Text style={styles.flaggedText}>Delete Deck</Text>
         </TouchableOpacity>
+      
       </View>
     )
   }
 }
 
-// export default connect()(Deck)
-export default DeckDetail
+export default connect()(DeckDetail)

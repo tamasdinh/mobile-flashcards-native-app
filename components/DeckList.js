@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions'
 
 import Deck from './Deck'
+import { styles } from '../utils/styles'
 
 
 class DeckList extends Component {
@@ -13,17 +14,15 @@ class DeckList extends Component {
     this.props.dispatch(handleInitialData())
   }
 
-  renderItem = ({ item }, keyExtractor) => {
-    console.log('Key:', keyExtractor)
+  renderItem = ({ item }) => {
     return (
       <View>
         <TouchableOpacity onPress={() => {
-          console.log(`Navigate to DeckDetail, Deck title ${item.title}`)
+          // TODO: add animation before nav to other component
           this.props.navigation.navigate(
           'DeckDetail',
-          { entryId: item.title }
+          { deckName: item.title }
           )}}>
-          <Text>{JSON.stringify(this.props)}</Text>
           <Deck deckName={item.title} />
         </TouchableOpacity>
       </View>
@@ -41,7 +40,6 @@ class DeckList extends Component {
 }
 
 function mapStateToProps({ data }) {
-  console.log('data from store:', data)
   return {
     decks: Object.values(data).map(deck => ({title: deck.title, length: deck.questions.length}))
   }

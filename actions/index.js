@@ -18,7 +18,6 @@ export function handleInitialData() {
   const id = JSON.stringify(uuid.v4())
   return (dispatch) => {
     return AsyncStorage.setItem(id, data)
-    // .then(console.log(JSON.parse(id), JSON.parse(data)))
     .then(dispatch(setInitialData(JSON.parse(id), JSON.parse(data))))
   }
 }

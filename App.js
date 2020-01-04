@@ -11,10 +11,14 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 import Constants from 'expo-constants'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { darkGrey, white } from './utils/colors'
+import { styles, baseColorDark, baseColorLight, accentColor1, redFlagColor, accentColor2, accentColor3 } from './utils/styles'
 import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
 import DeckDetail from './components/DeckDetail'
+import AddCard from './components/AddCard'
+import DeleteDeck from './components/DeleteDeck'
+import Quiz from './components/Quiz'
+import DeckResults from './components/DeckResults'
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -49,10 +53,10 @@ const BottomTabs = createBottomTabNavigator({
   }
 }, {
   tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? white : darkGrey,
+    activeTintColor: Platform.OS === 'ios' ? baseColorLight : baseColorDark,
     style: {
       height: 56,
-      backgroundColor: Platform.OS === 'ios' ? darkGrey: white,
+      backgroundColor: Platform.OS === 'ios' ? baseColorDark: baseColorLight,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -71,10 +75,50 @@ const StackNavigator = createStackNavigator({
   DeckDetail: {
     screen: DeckDetail,
     navigationOptions: {
-      headerTintColor: white,
+      headerTintColor: baseColorLight,
       headerStyle: {
-        backgroundColor: darkGrey
+        backgroundColor: baseColorDark
       }
+    }
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      headerTintColor: accentColor1,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Add new card'
+    }
+  },
+  DeleteDeck: {
+    screen: DeleteDeck,
+    navigationOptions: {
+      headerTintColor: redFlagColor,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Delete deck'
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: accentColor2,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Quiz time!'
+    }
+  },
+  DeckResults: {
+    screen: DeckResults,
+    navigationOptions: {
+      headerTintColor: accentColor3,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Results'
     }
   }
 })
@@ -86,7 +130,7 @@ export default class App extends Component {
     return (
       <Provider store={createStore(reducer, middleware)}>
         <View style={{flex: 1}}>
-          <CustomStatusBar backgroundColor={darkGrey} barStyle='light-content'/>
+          <CustomStatusBar backgroundColor={baseColorDark} barStyle='light-content'/>
           <NavContainer />
         </View>
       </Provider>

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
 import { setUpResults, addCorrect } from '../actions'
+import { clearLocalNotifications, setLocalNotification } from '../utils/notification'
 
 import { styles, accentColor1, accentColor3, baseColorLight, redFlagColor } from '../utils/styles'
 
@@ -49,6 +50,7 @@ class Quiz extends Component {
   }
 
   jumpToResults = () => {
+    clearLocalNotifications().then(setLocalNotification())
     this.props.navigation.navigate('DeckResults', { deckName: this.props.deckName })
   }
 

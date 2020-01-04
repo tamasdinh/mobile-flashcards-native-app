@@ -19,6 +19,7 @@ import AddCard from './components/AddCard'
 import DeleteDeck from './components/DeleteDeck'
 import Quiz from './components/Quiz'
 import DeckResults from './components/DeckResults'
+import { setLocalNotification } from './utils/notification'
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -136,6 +137,11 @@ const NavContainer = createAppContainer(
 )
 
 export default class App extends Component {
+
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer, middleware)}>

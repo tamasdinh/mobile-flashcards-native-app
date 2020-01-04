@@ -52,10 +52,10 @@ class DeleteDeck extends Component {
 }
 
 function mapStateToProps({ data }, { navigation}) {
-  const { entryId } = navigation.state.params
+  const { deckName } = navigation.state.params
   return {
-    deckName: entryId,
-    questionCount: data[entryId].questions.length
+    deckName,
+    questionCount: data[deckName].questions.length
   }
 }
 

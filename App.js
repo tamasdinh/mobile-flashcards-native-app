@@ -5,7 +5,7 @@ import reducer from './reducers'
 import middleware from './middleware'
 
 import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
-import { createAppContainer } from 'react-navigation'
+import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import Constants from 'expo-constants'
@@ -68,7 +68,7 @@ const BottomTabs = createBottomTabNavigator({
   }
 })
 
-const StackNavigator = createStackNavigator({
+const AppStack = createStackNavigator({
   Decks: {
     screen: BottomTabs
   },
@@ -111,6 +111,9 @@ const StackNavigator = createStackNavigator({
       title: 'Quiz time!'
     }
   },
+})
+
+const ResultStack = createStackNavigator({
   DeckResults: {
     screen: DeckResults,
     navigationOptions: {
@@ -123,7 +126,14 @@ const StackNavigator = createStackNavigator({
   }
 })
 
-const NavContainer = createAppContainer(StackNavigator)
+const NavContainer = createAppContainer(
+  createSwitchNavigator({
+      App: AppStack,
+      Results: ResultStack
+    },
+    { initialRouteName: 'App'}
+  )
+)
 
 export default class App extends Component {
   render() {

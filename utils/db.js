@@ -1,7 +1,7 @@
 import * as uuid from 'uuid'
 import { AsyncStorage } from 'react-native'
 
-export const id = 'b886ffe3-c11e-490e-ab64-73d1f96617e1'
+export const id = '970ba9b0-9ffa-4fe1-b8fe-f91fb3b31b2e'
 // export const id = uuid.v4()
 
 export const db = {
@@ -39,8 +39,3 @@ export function checkID (id) {
 export function _getAllItems () {
   return db
 }
-
-export function _getQuestion (deck, id) {
-  return db[deck].questions.find(q.id === id)
-}
-

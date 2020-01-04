@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 
 import { connect } from 'react-redux'
 import { handleInitialData, setInitialData } from '../actions'
@@ -31,7 +31,7 @@ class DeckList extends Component {
           'DeckDetail',
           { deckName: item.title }
           )}}>
-          <Deck deckName={item.title} />
+          <Deck deckName={item.title} noCards={item.length} />
         </TouchableOpacity>
       </View>
   )}

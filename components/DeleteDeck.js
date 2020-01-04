@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
+import { handleDeleteDeck } from '../actions'
 
 import { styles, redFlagColor, baseColorLight, accentColor2 } from '../utils/styles'
 
 class DeleteDeck extends Component {
   
-  dispatchDelete  = (deckName) => {
-    console.log(`Action for deck ${'deckName'} deletion to be dispatched`)
+  dispatchDelete  = () => {
+    this.props.dispatch(handleDeleteDeck({id: this.props.id, deckName: this.props.deckName}))
     this.props.navigation.navigate('Decks')
   }
   
@@ -51,11 +52,12 @@ class DeleteDeck extends Component {
   }
 }
 
-function mapStateToProps({ data }, { navigation}) {
+function mapStateToProps({ id, data }, { navigation}) {
   const { deckName } = navigation.state.params
   return {
+    id,
     deckName,
-    questionCount: data[deckName].questions.length
+    questionCount: data[deckName] ? data[deckName].questions.length : null
   }
 }
 

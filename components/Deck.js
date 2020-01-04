@@ -1,8 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-import { connect } from 'react-redux'
-
 import { styles } from '../utils/styles'
 
 function Deck (props) {
@@ -14,10 +12,4 @@ function Deck (props) {
   )
 }
 
-function mapStateToProps({ data }, props) {
-  return {
-    noCards: data[props.deckName].questions.length
-  }
-}
-
-export default connect(mapStateToProps)(Deck)
+export default Deck

@@ -14,24 +14,12 @@ class DeckDetail extends Component {
     }
   }
 
-  addCard = () => {
-    console.log('Add card')
-  }
-
-  startQuiz = () => {
-    console.log('Start Quiz')
-  }
-
-  deleteDeck = () => {
-    console.log('Delete Deck')
-  }
-
   render() {
-    const { deckName } = this.props.navigation.state.params
+    const { deckName, noCards } = this.props
     return (
       <View style={styles.container}>
       
-        <Deck deckName={deckName} />
+        <Deck deckName={deckName} noCards={noCards} />
       
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate(
@@ -65,4 +53,12 @@ class DeckDetail extends Component {
   }
 }
 
-export default connect()(DeckDetail)
+function mapStateToProps({ data }, { navigation }) {
+  const { deckName } = navigation.state.params
+  return {
+    deckName,
+    noCards: data[deckName] ? data[deckName].questions.length : null
+  }
+}
+
+export default connect(mapStateToProps)(DeckDetail)

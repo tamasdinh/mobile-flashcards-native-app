@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
-import { setUpResults } from '../actions'
+import { setUpResults, addCorrect } from '../actions'
 
-import { styles, baseColorDark, accentColor1, accentColor3, baseColorLight, redFlagColor } from '../utils/styles'
+import { styles, accentColor1, accentColor3, baseColorLight, redFlagColor } from '../utils/styles'
 
 class Quiz extends Component {
 
@@ -21,18 +21,17 @@ class Quiz extends Component {
       activeQuestion: this.props.questions[0],
       questionLength: this.props.questions.length
     }))
-    console.log(this.props)
     if (!this.props.results) {
       this.props.dispatch(setUpResults(this.props.deckName))
     }
   }
 
   toggleAnswer = () => {
-    return this.setState({showAnswer: this.state.showAnswer ? false : true})
+    this.setState({showAnswer: this.state.showAnswer ? false : true})
   }
 
   addCorrect = () => {
-    console.log('Add a point to the deck\'s result')
+    this.props.dispatch(addCorrect({ deckName: this.props.deckName }))
     this.nextQuestion()
   }
 
@@ -41,7 +40,6 @@ class Quiz extends Component {
       this.jumpToResults()
     } else {
       const activeQuestionIndex = this.state.activeQuestionIndex + 1
-      console.log(this.props.questions[activeQuestionIndex])
       this.setState(() => ({
         activeQuestionIndex,
         activeQuestion: this.props.questions[activeQuestionIndex],
@@ -51,12 +49,10 @@ class Quiz extends Component {
   }
 
   jumpToResults = () => {
-    console.log('Send results to store / AsyncStorage')
     this.props.navigation.navigate('DeckResults', { deckName: this.props.deckName })
   }
 
   render() {
-    const { questions } = this.props
     return (
       <View>
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
 
 import { styles, baseColorLight } from '../utils/styles'
+import { handleAddCard } from '../actions'
 
 class AddCard extends Component {
 
@@ -13,15 +14,19 @@ class AddCard extends Component {
   }
 
   addCard = () => {
-    console.log(`\nAdd card with:\nQuestion: ${this.state.cardQuestion}\nAnswer: ${this.state.cardAnswer}`)
+    this.props.dispatch(handleAddCard({
+      id: this.props.id,
+      deckName: this.props.deckName,
+      cardQuestion: this.state.cardQuestion,
+      cardAnswer: this.state.cardAnswer
+    }))
     this.props.navigation.goBack()
   }
 
   render() {
-    const { entryId } = this.props.navigation.state.params
     return (
       <KeyboardAvoidingView>
-        <Text style={[styles.keyText]}>Add new card to {entryId} deck</Text>
+        <Text style={[styles.keyText]}>Add new card to {this.props.deckName} deck</Text>
         <TextInput
           style={[styles.button1, styles.textInput]}
           placeholder='New question here'
@@ -32,7 +37,8 @@ class AddCard extends Component {
           onChangeText={(text) => this.setState({cardAnswer: text})}/>
         <TouchableOpacity
           style={[styles.button1, styles.button2]}
-          onPress={this.addCard}>
+          onPress={this.addCard}
+          disabled={!this.state.cardQuestion || !this.state.cardAnswer}>
           <Text style={{color: baseColorLight}}>Add new card</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
@@ -40,4 +46,11 @@ class AddCard extends Component {
   }
 }
 
-export default AddCard
+function mapStateToProps({ id }, { navigation }) {
+  return {
+    id,
+    deckName: navigation.state.params.deckName
+  }
+}
+
+export default connect(mapStateToProps)(AddCard)

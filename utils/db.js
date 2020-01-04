@@ -1,4 +1,8 @@
 import * as uuid from 'uuid'
+import { AsyncStorage } from 'react-native'
+
+export const id = 'b886ffe3-c11e-490e-ab64-73d1f96617e1'
+// export const id = uuid.v4()
 
 export const db = {
   React: {
@@ -26,6 +30,10 @@ export const db = {
       }
     ]
   }
+}
+
+export function checkID (id) {
+  return AsyncStorage.getItem(id)
 }
 
 export function _getAllItems () {

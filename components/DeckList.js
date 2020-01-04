@@ -1,17 +1,25 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 
 import { connect } from 'react-redux'
-import { handleInitialData } from '../actions'
+import { handleInitialData, setInitialData } from '../actions'
 
 import Deck from './Deck'
-import { styles } from '../utils/styles'
+import { styles, baseColorDark } from '../utils/styles'
+import { id, checkID } from '../utils/db'
 
 
 class DeckList extends Component {
 
   componentDidMount() {
-    this.props.dispatch(handleInitialData())
+    console.log('\nID from Decklist:', id)
+    checkID(id).then(result => {
+      if (result === null) {
+        this.props.dispatch(handleInitialData(id))
+      } else {
+        this.props.dispatch(setInitialData(id, JSON.parse(result)))
+      }
+    })
   }
 
   renderItem = ({ item }) => {
@@ -29,6 +37,14 @@ class DeckList extends Component {
   )}
 
   render() {
+    if (this.props.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size='large'/>
+          <Text style={{color: baseColorDark, marginTop: 10}}>Loading data...</Text>
+        </View>
+      )
+    }
     return (
       <FlatList
         data = {this.props.decks}
@@ -41,7 +57,8 @@ class DeckList extends Component {
 
 function mapStateToProps({ data }) {
   return {
-    decks: Object.values(data).map(deck => ({title: deck.title, length: deck.questions.length}))
+    loading: data ? false : true,
+    decks: data ? Object.values(data).map(deck => ({title: deck.title, length: deck.questions.length})) : null
   }
 }
 

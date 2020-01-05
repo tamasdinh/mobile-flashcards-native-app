@@ -21,6 +21,7 @@ class AddDeck extends Component {
   }
 
   createDeck = () => {
+    this.setState({createDeckTitle: ''})
     this.props.dispatch(handleAddDeck(this.props.id, this.state.createDeckTitle))
       .then(this.props.navigation.navigate('DeckDetail', { deckName: this.state.createDeckTitle }))
   }
@@ -40,6 +41,7 @@ class AddDeck extends Component {
         <TextInput
           style={[styles.button1, styles.textInput, {color: `${this.state.inputColor}`}]}
           placeholder='Add deck title here'
+          clearTextOnFocus={true}
           onChangeText={text => {
             this.setState({createDeckTitle: text})
             if (this.props.deckNames.includes(text)) {

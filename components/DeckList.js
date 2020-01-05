@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Animated } from 'react-native'
 
 import { connect } from 'react-redux'
 import { handleInitialData, setInitialData } from '../actions'
@@ -10,6 +10,10 @@ import { id, checkID } from '../utils/db'
 
 
 class DeckList extends Component {
+
+  state = {
+    bounceValue: new Animated.Value(1)
+  }
 
   componentDidMount() {
     console.log('\nID from Decklist:', id)
@@ -24,17 +28,23 @@ class DeckList extends Component {
 
   renderItem = ({ item }) => {
     return (
-      <View>
+      <Animated.View style={[styles.button1, styles.shadow, styles.deckContainer, { transform: [{scale: this.state.bounceValue}]}]}>
         <TouchableOpacity onPress={() => {
-          // TODO: add animation before nav to other component
-          this.props.navigation.navigate(
-          'DeckDetail',
-          { deckName: item.title }
-          )}}>
+          Animated.sequence([
+            Animated.timing(this.state.bounceValue, {duration: 200, toValue: .5}),
+              Animated.spring(this.state.bounceValue, { toValue: 1, friction: 4})
+            ]).start()
+            this.props.navigation.navigate(
+              'DeckDetail',
+              { deckName: item.title }
+              )
+              }}
+              >
           <Deck deckName={item.title} noCards={item.length} />
         </TouchableOpacity>
-      </View>
-  )}
+      </Animated.View>
+    )
+  }
 
   render() {
     if (this.props.loading) {

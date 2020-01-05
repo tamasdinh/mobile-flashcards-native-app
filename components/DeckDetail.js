@@ -19,7 +19,9 @@ class DeckDetail extends Component {
     return (
       <View style={styles.container}>
       
-        <Deck deckName={deckName} noCards={noCards} />
+        <View style={[styles.button1, styles.shadow, styles.deckContainer]}>
+          <Deck deckName={deckName} noCards={noCards} />
+        </View>
       
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate(

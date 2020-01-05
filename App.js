@@ -4,14 +4,14 @@ import { Provider } from 'react-redux'
 import reducer from './reducers'
 import middleware from './middleware'
 
-import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import Constants from 'expo-constants'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { styles, baseColorDark, baseColorLight, accentColor1, redFlagColor, accentColor2, accentColor3 } from './utils/styles'
+import { baseColorDark, baseColorLight, accentColor1, redFlagColor, accentColor2, accentColor3 } from './utils/styles'
 import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
 import DeckDetail from './components/DeckDetail'

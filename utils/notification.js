@@ -1,4 +1,3 @@
-import React from 'react'
 import { AsyncStorage } from 'react-native'
 import * as Permissions from 'expo-permissions'
 import { Notifications } from 'expo'

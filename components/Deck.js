@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { connect } from 'react-redux'
+import { View, Text } from 'react-native'
+
+import { styles } from '../utils/styles'
 
 class Deck extends Component {
+
   render() {
     return (
       <View>
-        <Text>Deck</Text>
+        <Text style={[styles.keyText, {marginTop: 10}]}>{this.props.deckName}</Text>
+        <Text style={{textAlign: 'center'}}>{`${this.props.noCards} card`}{this.props.noCards > 1 ? 's' : ''}</Text>
       </View>
     )
   }
 }
 
-export default connect()(Deck)
+export default Deck

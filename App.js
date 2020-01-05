@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux'
 import reducer from './reducers'
+import middleware from './middleware'
 
-import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
-import { createAppContainer } from 'react-navigation'
+import { View, StatusBar, Platform } from 'react-native';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import Constants from 'expo-constants'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { darkGrey, white } from './utils/colors'
-import DeckList from './components/Home'
+import { baseColorDark, baseColorLight, accentColor1, redFlagColor, accentColor2, accentColor3 } from './utils/styles'
+import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
-import Deck from './components/Deck'
+import DeckDetail from './components/DeckDetail'
+import AddCard from './components/AddCard'
+import DeleteDeck from './components/DeleteDeck'
+import Quiz from './components/Quiz'
+import DeckResults from './components/DeckResults'
+import { setLocalNotification } from './utils/notification'
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -24,7 +30,7 @@ function CustomStatusBar ({ backgroundColor, ...props }) {
 }
 
 const BottomTabs = createBottomTabNavigator({
-  Home: {
+  DeckList: {
     screen: DeckList,
     navigationOptions: {
       tabBarLabel: 'Decks',
@@ -48,10 +54,10 @@ const BottomTabs = createBottomTabNavigator({
   }
 }, {
   tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? white : darkGrey,
+    activeTintColor: Platform.OS === 'ios' ? baseColorLight : baseColorDark,
     style: {
       height: 56,
-      backgroundColor: Platform.OS === 'ios' ? darkGrey: white,
+      backgroundColor: Platform.OS === 'ios' ? baseColorDark: baseColorLight,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -63,29 +69,84 @@ const BottomTabs = createBottomTabNavigator({
   }
 })
 
-const StackNavigator = createStackNavigator({
+const AppStack = createStackNavigator({
   Decks: {
     screen: BottomTabs
   },
-  Deck: {
-    screen: Deck,
+  DeckDetail: {
+    screen: DeckDetail,
     navigationOptions: {
-      headerTintColor: white,
+      headerTintColor: baseColorLight,
       headerStyle: {
-        backgroundColor: darkGrey
+        backgroundColor: baseColorDark
       }
+    }
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      headerTintColor: accentColor1,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Add new card'
+    }
+  },
+  DeleteDeck: {
+    screen: DeleteDeck,
+    navigationOptions: {
+      headerTintColor: redFlagColor,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Delete deck'
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: accentColor2,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Quiz time!'
+    }
+  },
+})
+
+const ResultStack = createStackNavigator({
+  DeckResults: {
+    screen: DeckResults,
+    navigationOptions: {
+      headerTintColor: accentColor3,
+      headerStyle: {
+        backgroundColor: baseColorLight
+      },
+      title: 'Results'
     }
   }
 })
 
-const NavContainer = createAppContainer(StackNavigator)
+const NavContainer = createAppContainer(
+  createSwitchNavigator({
+      App: AppStack,
+      Results: ResultStack
+    },
+    { initialRouteName: 'App'}
+  )
+)
 
 export default class App extends Component {
+
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     return (
-      <Provider store={createStore(reducer)}>
+      <Provider store={createStore(reducer, middleware)}>
         <View style={{flex: 1}}>
-          <CustomStatusBar backgroundColor={darkGrey} barStyle='light-content'/>
+          <CustomStatusBar backgroundColor={baseColorDark} barStyle='light-content'/>
           <NavContainer />
         </View>
       </Provider>
